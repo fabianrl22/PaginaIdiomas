@@ -144,7 +144,6 @@ if (mysqli_connect_errno()){
                         <th>FECHA DE INICIO</th>              
                         <th>FECHA DE FINALIZACIÓN</th>
                         <th>ESTADO</th>
-                        <th>FINANCIADORES</th>
                         <th>RECURSOS FRESCOS</th>
                         <th>RECURSOS EN ESPECIE</th>
                         <th>GRUPO DE INVESTIGACIÓN</th>
@@ -176,7 +175,6 @@ if (mysqli_connect_errno()){
                                       <td style="width: 160px;"><?php echo $fila['FECHA_START'];?></td> 
                                       <td><?php echo $fila['FECHA_END'];?></td> 
                                       <td><?php echo $fila['ESTADO'];?></td> 
-                                      <td><?php echo $fila['ENTIDADES'];?></td> 
                                       <td><?php echo $fila['RECURSOS'];?></td>
                                       <td><?php echo $fila['ESPECIE'];?></td>
                                       <td><?php echo $fila['GRUPO'];?></td>
