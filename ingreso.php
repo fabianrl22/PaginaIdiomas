@@ -1,5 +1,22 @@
 <?php
 include("configuracion.php");
+
+//CODIGO TOKEN-----------------------------
+session_start();
+
+if (empty($_SESSION['token'])) {
+  $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+
+if (!empty($_POST['token'])) {
+  if (hash_equals($_SESSION['token'], $_POST['token'])) {
+    echo "TOKEN EXITOSO";
+  } else {
+      echo "ERROR DE TOKEN";
+  }
+}
+//------------------------------------------
 // Si el usuario ya envió los datos de login, se entra aqui para verificar si son correctos
 if(isset($_POST["enviar"]))
 {
@@ -96,6 +113,7 @@ if(isset($_POST["enviar"]))
         <div class="form" id="login">
             <!-- Se define el metodo POST DE ENVIO, Ya que son datos privados. Se define en action el envio del formulario a la pagina actual ingreso.php  -->
             <form class="login-form" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post" target="_SELF">
+              <input name="csrf" type="hidden" value="<?php echo $_SESSION['csrf']; ?>">
               <input type="text" id="USER" name="USER" placeholder="Usuario"/>
               <input type="password" id="PASS" name="PASS" placeholder="Contraseña"/>
 

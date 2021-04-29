@@ -1,6 +1,22 @@
 <?php 
 // Se incluye el archivo de configuracion con los datos de la base de datos, el ususario y la contraseña
 include("configuracion.php");
+//CODIGO TOKEN-----------------------------
+session_start();
+
+if (empty($_SESSION['token'])) {
+  $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+
+if (!empty($_POST['token'])) {
+  if (hash_equals($_SESSION['token'], $_POST['token'])) {
+    echo "TOKEN EXITOSO";
+  } else {
+      echo "ERROR DE TOKEN";
+  }
+}
+//------------------------------------------
 // Realizo la conexion a la base de datos mandando las variables que hay en el archivo configuracion.php
 $conexion = new mysqli($server,$user,$pass,$bd);
 // Si la conexion no es exitosa, sacó un anuncio de error y CIERRO comunicacion
@@ -95,6 +111,7 @@ if (mysqli_connect_errno()){
                 <!-- Mismo modal implementado para el boton Investigacion, descrito en index.php -->
                 <div class="modal-body" style="width: 310px;">
                   <form action="investigaciones.php" method="get" target="_SELF">
+                    <input name="csrf" type="hidden" value="<?php echo $_SESSION['csrf']; ?>">
                     <div class="form-group">
                       <label for="busqueda1" class="col-form-label">Investigadores:</label><br>
                       <input style="width: 280px" type="text" class="form-input" id="busqueda1" name="busqueda1" 

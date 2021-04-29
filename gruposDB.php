@@ -1,5 +1,21 @@
 <?php
 include("configuracion.php");
+//CODIGO TOKEN-----------------------------
+session_start();
+
+if (empty($_SESSION['token'])) {
+  $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+
+if (!empty($_POST['token'])) {
+  if (hash_equals($_SESSION['token'], $_POST['token'])) {
+    echo "TOKEN EXITOSO";
+  } else {
+      echo "ERROR DE TOKEN";
+  }
+}
+//------------------------------------------
 // Realizo la conexion a la base de datos mandando las variables que hay en el archivo configuracion.php
 $conexion = new mysqli($server,$user,$pass,$bd);
 
@@ -123,29 +139,31 @@ return ;
                                   <!-- Creo una tabla para mostrar los resultados de la busqueda -->
 
                                   <form class="login-form" action="<?php echo $_SERVER["PHP_SELF"]?>" method="post" target="_SELF">
-                                  <tbody>
+                                    <input name="csrf" type="hidden" value="<?php echo $_SESSION['csrf']; ?>">
 
-                                    <tr>
-                                      <!-- Empiezo a recorrer la primera fila de resultados y a mostrar en pantalla las columnas TIPO Y TITULO -->
-                                      
-                                      <td><input style="width: 20px;" type="hidden" id="Id"  name="Id" value="<?php echo $fila['ID'];?>"></td>
-                                      <td><input type="text" name="<?php echo $fila['GRUPO'];?>" id="Grupo" value="<?php echo $fila['GRUPO'];?>"></td>
-                                      <td><input type="text" name="Coordinador" id="Coordinador" value="<?php echo $fila['COORDINADOR'];?>"></td>
-                                      <td><input type="text" name="Correo" id="Correo" value="<?php echo $fila['CORREO'];?>"></td>
-                                      <td><input type="text" name="Codigo" id="Codigo" value="<?php echo $fila['CODIGO'];?>"></td>
-                                      <td><input type="text" name="Clasificacion" id="Clasificacion" value="<?php echo $fila['CLASIFICACION'];?>"></td>
-                                      <td><input type="text" name="Red" id="Red" value="<?php echo $fila['RED'];?>"></td> 
-                                      <td><input type="text" name="Semillero" id="Semillero" value="<?php echo $fila['SEMILLERO'];?>"></td> 
-                                      <td>
-                                      <button onclick="funcion('<?php echo $fila['GRUPO'];?>')"> enviar </button>
-                                      
-                                      </td>
-                                      
-                                    </tr>
-                                      
-                                    <?php } ?>  
-                                   </tbody>
-                                    </form>
+                                    <tbody>
+
+                                      <tr>
+                                        <!-- Empiezo a recorrer la primera fila de resultados y a mostrar en pantalla las columnas TIPO Y TITULO -->
+                                        
+                                        <td><input style="width: 20px;" type="hidden" id="Id"  name="Id" value="<?php echo $fila['ID'];?>"></td>
+                                        <td><input type="text" name="<?php echo $fila['GRUPO'];?>" id="Grupo" value="<?php echo $fila['GRUPO'];?>"></td>
+                                        <td><input type="text" name="Coordinador" id="Coordinador" value="<?php echo $fila['COORDINADOR'];?>"></td>
+                                        <td><input type="text" name="Correo" id="Correo" value="<?php echo $fila['CORREO'];?>"></td>
+                                        <td><input type="text" name="Codigo" id="Codigo" value="<?php echo $fila['CODIGO'];?>"></td>
+                                        <td><input type="text" name="Clasificacion" id="Clasificacion" value="<?php echo $fila['CLASIFICACION'];?>"></td>
+                                        <td><input type="text" name="Red" id="Red" value="<?php echo $fila['RED'];?>"></td> 
+                                        <td><input type="text" name="Semillero" id="Semillero" value="<?php echo $fila['SEMILLERO'];?>"></td> 
+                                        <td>
+                                        <button onclick="funcion('<?php echo $fila['GRUPO'];?>')"> enviar </button>
+                                        
+                                        </td>
+                                        
+                                      </tr>
+                                        
+                                      <?php } ?>  
+                                    </tbody>
+                                  </form>
                         <!-- SI NO HAY RESULTADOS SEGUN LO CONSULTADO, SE LE INDICA AL USUARIO -->
                         <?php } else{ ?>
                             <h2 style="color: red;">No se encontró ningun resultado.</h2>
