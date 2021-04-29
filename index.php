@@ -1,3 +1,22 @@
+<?php 
+//CODIGO TOKEN-----------------------------
+session_start();
+
+if (empty($_SESSION['token'])) {
+  $_SESSION['token'] = bin2hex(random_bytes(32));
+}
+$token = $_SESSION['token'];
+
+if (!empty($_POST['token'])) {
+  if (hash_equals($_SESSION['token'], $_POST['token'])) {
+    echo "TOKEN EXITOSO";
+  } else {
+      echo "ERROR DE TOKEN";
+  }
+}
+//------------------------------------------
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -140,6 +159,7 @@
                 <!-- Se define el cuerpo del moda, con las opciones, filtros de busqueda  -->
                 <div class="modal-body" style="width: 310px;">
                   <form action="investigaciones.php" method="get" target="_SELF">
+                    <input name="csrf" type="hidden" value="<?php echo $_SESSION['csrf']; ?>">
                     <div class="form-group">
                       <!-- Busqueda por investigaciones con su respectivo campo input  -->
                       <label for="busqueda1" class="col-form-label">Investigadores:</label><br>
